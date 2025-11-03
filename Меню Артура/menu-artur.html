@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню Артура - Каталог блюд</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: white;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-right: 55px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 36px;
+            font-weight: 400;
+            color: #333;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 400;
+            margin: 40px 0 20px 0;
+            text-align: center;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #f5f5f5;
+        }
+
+        .card h3 {
+            padding: 15px 10px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 400;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            line-height: 1.3;
+            color: #333;
+        }
+
+        .placeholder {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .placeholder::after {
+            content: "📷";
+            font-size: 48px;
+            opacity: 0.3;
+        }
+
+        /* Навигация */
+        .dot-navigation {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ccc;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            display: block;
+        }
+
+        .dot:hover {
+            transform: scale(1.3);
+            opacity: 1;
+            background: #999;
+        }
+
+        .dot.active {
+            width: 18px;
+            height: 18px;
+            background: #333;
+            opacity: 1;
+        }
+
+        .dot::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1976D2;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            white-space: nowrap;
+            font-size: 15px;
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+            z-index: 1001;
+        }
+
+        .dot:hover::before,
+        .dot.active::before {
+            opacity: 1;
+        }
+
+        /* Мобильные устройства */
+        @media (max-width: 768px) {
+            .container {
+                padding-right: 25px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .dot-navigation {
+                right: 15px;
+                gap: 12px;
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .dot.active {
+                width: 14px;
+                height: 14px;
+            }
+
+            .dot::before {
+                font-size: 11px;
+                padding: 5px 8px;
+                border-radius: 4px;
+            }
+
+            .dot.active::before {
+                opacity: 1;
+            }
+        }
+
+        /* Печать */
+        @media print {
+            .dot-navigation {
+                display: none;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 10mm 5mm 5mm 5mm;
+            }
+
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 0;
+                padding-right: 0;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+
+            .section-title {
+                font-size: 18px;
+                margin: 20px 0 10px 0;
+                page-break-after: avoid;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 3mm;
+                padding: 0;
+            }
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                box-shadow: none;
+                border: 1px solid #e0e0e0;
+                page-break-inside: avoid;
+                break-inside: avoid;
+                border-radius: 8px;
+                overflow: hidden;
+                background: white;
+            }
+
+            .card img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+                object-position: center;
+                flex-shrink: 0;
+            }
+
+            .card h3 {
+                padding: 8px 5px;
+                text-align: center;
+                font-size: 16px;
+                font-weight: 400;
+                min-height: 50px;
+                max-height: 50px;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+                width: 100%;
+                line-height: 1.2;
+                box-sizing: border-box;
+            }
+
+            .card:nth-child(12n) {
+                page-break-after: always;
+                break-after: page;
+            }
+
+            .section-title {
+                page-break-after: avoid;
+            }
+
+            .section-title + .grid .card:nth-child(12n) {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Меню Артура</h1>
+
+        <!-- ЗАВТРАК -->
+        <h2 id="section-breakfast" class="section-title">ЗАВТРАК</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/Яичница с помидорами.png" alt="Яичница с помидорами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Яичница с помидорами</h3>
+            </div>
+            <div class="card">
+                <img src="assets/омлет-поджаренный.jpg" alt="Омлет поджаренный с сыром" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Омлет поджаренный с сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/яичница-с-помидорами.jpg" alt="Яичница с овощами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Яичница с овощами</h3>
+            </div>
+            <div class="card">
+                <img src="assets/тонкие-блины.png" alt="Блины со сметаной" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Блины со сметаной</h3>
+            </div>
+            <div class="card">
+                <img src="assets/овсянка-с-бананом.jpg" alt="Овсяная каша" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Овсяная каша</h3>
+            </div>
+            <div class="card">
+                <img src="assets/сырники.jpg" alt="Сырники" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сырники</h3>
+            </div>
+            <div class="card">
+                <img src="assets/круассан.jpg" alt="Круассан" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Круассан</h3>
+            </div>
+            <div class="card">
+                <img src="assets/круассан-с-джемом.jpg" alt="Круассан с маслом и джемом" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Круассан с маслом и джемом</h3>
+            </div>
+            <div class="card">
+                <img src="assets/круассан-с-сыром.jpg" alt="Круассан с сыром" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Круассан с сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/шакшука.jpg" alt="Шакшука" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Шакшука</h3>
+            </div>
+            <div class="card">
+                <img src="assets/икра-на-тосте.png" alt="Бутерброд с чёрной или красной икрой" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Бутерброд с чёрной или красной икрой</h3>
+            </div>
+            <div class="card">
+                <img src="assets/гречка-с-молоком.jpg" alt="Гречка с молоком" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Гречка с молоком</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Драники.png" alt="Драники" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Драники</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Манная каша.png" alt="Манная каша" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Манная каша</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Сисиска жаренная в лаваше.png" alt="Сосиска жареная в лаваше" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сосиска жареная в лаваше</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Сэндвич с ветчиной и сыром.jpeg" alt="Сэндвич с ветчиной и сыром" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сэндвич с ветчиной и сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Яичница с зелёной стручковой фасолью.png" alt="Яичница с зелёной стручковой фасолью" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Яичница с зелёной стручковой фасолью</h3>
+            </div>
+        </div>
+
+        <!-- ХОЛОДНЫЕ ЗАКУСКИ -->
+        <h2 id="section-cold-appetizers" class="section-title">ХОЛОДНЫЕ ЗАКУСКИ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/икра-из-баклажанов.jpg" alt="Икра баклажанов" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Икра баклажанов</h3>
+            </div>
+            <div class="card">
+                <img src="assets/красная-икра.png" alt="Икра красная (на которую Вика подсадила)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Икра красная (на которую Вика подсадила)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/сало-молотое.png" alt="Сало молотое" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сало молотое</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Селёдка с картофелем.JPG" alt="Селёдка с картофелем" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Селёдка с картофелем</h3>
+            </div>
+            <div class="card">
+                <img src="assets/помидор-с-сыром-и-чесноком.png" alt="Помидор с сыром и чесноком (как Вика делает)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Помидор с сыром и чесноком (как Вика делает)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/буррата.jpg" alt="Страчетелла" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Страчетелла</h3>
+            </div>
+            <div class="card">
+                <img src="assets/буррата.jpg" alt="Сыр страчителла - ВайнЭндКраб" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сыр страчителла - ВайнЭндКраб</h3>
+            </div>
+            <div class="card">
+                <img src="assets/буррата.jpg" alt="Сыр, который Бликштейн любит" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сыр, который Бликштейн любит</h3>
+            </div>
+            <div class="card">
+                <img src="assets/пармезан.jpg" alt="Пармезан" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Пармезан</h3>
+            </div>
+            <div class="card">
+                <img src="assets/фруктовая-нарезка.png" alt="Фруктовая нарезка" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Фруктовая нарезка</h3>
+            </div>
+            <div class="card">
+                <img src="assets/оливье.png" alt="Оливье" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Оливье</h3>
+            </div>
+            <div class="card">
+                <img src="assets/икра-на-тосте.png" alt="Бутерброды с икрой (красной и черной)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Бутерброды с икрой (красной и черной)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/морской-еж-с-икрой.png" alt="Морской ёж с икрой" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Морской ёж с икрой</h3>
+            </div>
+        </div>
+
+        <!-- ГОРЯЧИЕ ЗАКУСКИ -->
+        <h2 id="section-hot-appetizers" class="section-title">ГОРЯЧИЕ ЗАКУСКИ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/Люля-кебаб.JPG" alt="Люля-кебаб" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Люля-кебаб</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Жульен с курицей и грибами.png" alt="Жульен с курицей и грибами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Жульен с курицей и грибами</h3>
+            </div>
+            <div class="card">
+                <img src="assets/жареный-сулугуни.jpg" alt="Жареный сулугуни" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Жареный сулугуни</h3>
+            </div>
+            <div class="card">
+                <img src="assets/моцарелла-в-панировке.jpg" alt="Конраку тама (брусочки из сыра моцарелла в панировке) - Якитория" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Конраку тама (брусочки из сыра моцарелла в панировке) - Якитория</h3>
+            </div>
+            <div class="card">
+                <img src="assets/креветки-темпура.jpg" alt="Хрустящие креветки Васаби" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Хрустящие креветки "Васаби"</h3>
+            </div>
+            <div class="card">
+                <img src="assets/руккола-с-креветками.jpg" alt="Руккола с хрустящими креветками - NUAR" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Руккола с хрустящими креветками - NUAR</h3>
+            </div>
+            <div class="card">
+                <img src="assets/эдемами.png" alt="Эдемами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Эдемами</h3>
+            </div>
+            <div class="card">
+                <img src="assets/гренки-с-чесноком.png" alt="Гренки с чесноком" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Гренки с чесноком</h3>
+            </div>
+            <div class="card">
+                <img src="assets/жареные-пельмени.png" alt="Пельмени жареные с телятиной" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Пельмени жареные с телятиной</h3>
+            </div>
+            <div class="card">
+                <img src="assets/долма.jpg" alt="Долма" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Долма</h3>
+            </div>
+        </div>
+
+        <!-- САЛАТЫ -->
+        <h2 id="section-salads" class="section-title">САЛАТЫ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/цезарь-с-курицей.jpg" alt="Цезарь с курицей" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Цезарь с курицей</h3>
+            </div>
+            <div class="card">
+                <img src="assets/греческий-салат.jpg" alt="Салат греческий" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат греческий</h3>
+            </div>
+            <div class="card">
+                <img src="assets/салат-из-помидоров-и-огурцов.jpg" alt="Салат из помидоров и огурцов" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат из помидоров и огурцов</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Салат из говяжьего языка.png" alt="Салат из говяжьего языка" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат из говяжьего языка</h3>
+            </div>
+            <div class="card">
+                <img src="assets/крабовый-салат.jpg" alt="Салат крабовый" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат крабовый</h3>
+            </div>
+            <div class="card">
+                <img src="assets/коралловый-салат.jpg" alt="Салат с козьим сыром" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат с козьим сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/салат-из-авокадо.jpg" alt="Салат из авокадо" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат из авокадо</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Салат из жареных баклажанов со страчетеллой.JPG" alt="Салат из жареных баклажанов со страчетеллой" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат из жареных баклажанов со страчетеллой</h3>
+            </div>
+            <div class="card">
+                <img src="assets/оливье.png" alt="Оливье" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Оливье</h3>
+            </div>
+            <div class="card">
+                <img src="assets/оливье-с-икрой.jpg" alt="Оливье с лососевой икрой - Кафе ПушкинЪ" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Оливье с лососевой икрой - Кафе ПушкинЪ</h3>
+            </div>
+            <div class="card">
+                <img src="assets/селедка-под-шубой.jpg" alt="Селёдка под шубой" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Селёдка под шубой</h3>
+            </div>
+            <div class="card">
+                <img src="assets/свекольный-салат.jpg" alt="Салат Пальчики оближешь (красный, свекольный)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат "Пальчики оближешь" (красный, свекольный)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/помидоры-со-сметаной.jpg" alt="Помидоры со сметаной, луком и зеленью" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Помидоры со сметаной, луком и зеленью</h3>
+            </div>
+            <div class="card">
+                <img src="assets/баклажаны-с-помидорами-черри.jpg" alt="Жареные баклажаны и помидоры черри" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Жареные баклажаны и помидоры черри</h3>
+            </div>
+            <div class="card">
+                <img src="assets/картошка-с-зеленью.jpg" alt="Много зелени и варёная картошка" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Много зелени и варёная картошка</h3>
+            </div>
+            <div class="card">
+                <img src="assets/руккола-с-креветками.jpg" alt="Салат с хрустящими креветками и кисло-сладким соусом - NUAR" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Салат с хрустящими креветками и кисло-сладким соусом - NUAR</h3>
+            </div>
+        </div>
+
+        <!-- СУПЫ -->
+        <h2 id="section-soups" class="section-title">СУПЫ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/борщ.jpg" alt="Борщ" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Борщ</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Уха.JPG" alt="Уха" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Уха</h3>
+            </div>
+            <div class="card">
+                <img src="assets/куриный-бульон-с-лапшой.jpg" alt="Куриный бульон с домашней лапшой - Превью" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Куриный бульон с домашней лапшой - Превью</h3>
+            </div>
+            <div class="card">
+                <img src="assets/том-ям.jpg" alt="Том ям" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Том ям</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Грибной суп.png" alt="Грибной суп" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Грибной суп</h3>
+            </div>
+            <div class="card">
+                <img src="assets/крем-суп-из-шампиньонов.jpg" alt="Крем-суп из шампиньонов" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Крем-суп из шампиньонов</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Харчо.JPG" alt="Харчо" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Харчо</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Викин лёгкий суп.png" alt="Викин лёгкий суп" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Викин лёгкий суп</h3>
+            </div>
+            <div class="card">
+                <img src="assets/дюшпара.png" alt="Дюшпара (пельмени в бульоне)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Дюшпара (пельмени в бульоне)</h3>
+            </div>
+        </div>
+
+        <!-- ОСНОВНЫЕ БЛЮДА -->
+        <h2 id="section-main-dishes" class="section-title">ОСНОВНЫЕ БЛЮДА</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/ежики-из-мяса.jpg" alt="Ёжики из мяса" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Ёжики из мяса</h3>
+            </div>
+            <div class="card">
+                <img src="assets/тар-тар-из-говядины.png" alt="Тар-тар из говядины" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Тар-тар из говядины</h3>
+            </div>
+            <div class="card">
+                <img src="assets/стейк.jpg" alt="Стейк 7+" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Стейк 7+</h3>
+            </div>
+            <div class="card">
+                <img src="assets/шашлык.jpg" alt="Шашлык" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Шашлык</h3>
+            </div>
+            <div class="card">
+                <img src="assets/шашлык.jpg" alt="Шашлык куриный" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Шашлык куриный</h3>
+            </div>
+            <div class="card">
+                <img src="assets/свиные-рёбра.jpg" alt="Свиные рёбра" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Свиные рёбра</h3>
+            </div>
+            <div class="card">
+                <img src="assets/куриные-крылышки.jpg" alt="Крылышки из ресторана Басты" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Крылышки из ресторана Басты</h3>
+            </div>
+            <div class="card">
+                <img src="assets/чизбургер.png" alt="Чизбургер из Макдака" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Чизбургер из Макдака</h3>
+            </div>
+            <div class="card">
+                <img src="assets/сосиски.jpg" alt="Сосиски" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сосиски</h3>
+            </div>
+            <div class="card">
+                <img src="assets/вареная-колбаса.png" alt="Варёная докторская колбаса" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Варёная докторская колбаса</h3>
+            </div>
+            <div class="card">
+                <img src="assets/сырокопченая-колбаса.jpg" alt="Колбаса сырокопчёная" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Колбаса сырокопчёная</h3>
+            </div>
+            <div class="card">
+                <img src="assets/шаурма.jpg" alt="Шаурма" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Шаурма</h3>
+            </div>
+            <div class="card">
+                <img src="assets/жареная-картошка-с-луком.jpg" alt="Молодой жареный картофель с луком" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Молодой жареный картофель с луком</h3>
+            </div>
+            <div class="card">
+                <img src="assets/жареная-картошка-с-грибами.png" alt="Картошка жареная с грибами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Картошка жареная с грибами</h3>
+            </div>
+            <div class="card">
+                <img src="assets/крошка-картошка.jpg" alt="Крошка картошка" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Крошка картошка</h3>
+            </div>
+            <div class="card">
+                <img src="assets/запеченные-баклажаны.jpg" alt="Запечённые баклажаны, как мама делала" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Запечённые баклажаны, как мама делала</h3>
+            </div>
+            <div class="card">
+                <img src="assets/горшочек-с-картошкой-и-грибами.png" alt="Горшочек запечённый с картошкой и грибами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Горшочек запечённый с картошкой и грибами</h3>
+            </div>
+            <div class="card">
+                <img src="assets/лазанья.jpg" alt="Лазанья" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Лазанья</h3>
+            </div>
+            <div class="card">
+                <img src="assets/паста.jpg" alt="Разная паста" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Разная паста</h3>
+            </div>
+            <div class="card">
+                <img src="assets/жареный-рис.jpg" alt="Жареный рисик" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Жареный рисик</h3>
+            </div>
+            <div class="card">
+                <img src="assets/рыба-сибас-и-красная.jpg" alt="Рыба: сибас и красная" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Рыба: сибас и красная</h3>
+            </div>
+            <div class="card">
+                <img src="assets/черная-жемчужина.jpg" alt="Чёрная жемчужина (из Лямара)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Чёрная жемчужина (из Лямара)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/черная-треска.png" alt="Чёрная треска" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Чёрная треска</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Много всего из ресторана Оригами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Много всего из ресторана Оригами</h3>
+            </div>
+        </div>
+
+        <!-- СУШИ И РОЛЛЫ -->
+        <h2 id="section-sushi" class="section-title">СУШИ И РОЛЛЫ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Вкусные суши" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Вкусные суши</h3>
+            </div>
+            <div class="card">
+                <img src="assets/ролл-филадельфия.jpg" alt="Ролл Филадельфия - NUAR" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Ролл Филадельфия - NUAR</h3>
+            </div>
+        </div>
+
+        <!-- ВЫПЕЧКА -->
+        <h2 id="section-bakery" class="section-title">ВЫПЕЧКА</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/пирожки.jpg" alt="Выпечка, пирожки" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Выпечка, пирожки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/сосиски-в-тесте.png" alt="Сосиски в тесте" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сосиски в тесте</h3>
+            </div>
+            <div class="card">
+                <img src="assets/тандырная-лепешка.jpg" alt="Тандырные лепешки" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Тандырные лепешки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/хачапури.jpg" alt="Хачапури с сыром" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Хачапури с сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/ламаджо.jpg" alt="Ламаджо" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Ламаджо</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Кутабы с сыром.JPG" alt="Кутабы с сыром" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Кутабы с сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Самса.JPG" alt="Самса" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Самса</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Чебуреки с сыром или мясом.png" alt="Чебуреки с сыром или мясом" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Чебуреки с сыром или мясом</h3>
+            </div>
+        </div>
+
+        <!-- ДЕСЕРТЫ -->
+        <h2 id="section-desserts" class="section-title">ДЕСЕРТЫ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/Медовик.JPG" alt="Медовик - Кафе ПушкинЪ" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Медовик - Кафе ПушкинЪ</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Медовик.JPG" alt="Медовик" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Медовик</h3>
+            </div>
+            <div class="card">
+                <img src="assets/тирамису.jpg" alt="Тирамису с манговым пюре и свежими ягодами - NUAR" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Тирамису с манговым пюре и свежими ягодами - NUAR</h3>
+            </div>
+            <div class="card">
+                <img src="assets/мильфей.jpg" alt="Мильфей в белом шоколаде с вишнёвым желе - NUAR" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Мильфей в белом шоколаде с вишнёвым желе - NUAR</h3>
+            </div>
+            <div class="card">
+                <img src="assets/Наполеон.JPG" alt="Наполеон" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Наполеон</h3>
+            </div>
+            <div class="card">
+                <img src="assets/варенье-из-грецкого-ореха.jpg" alt="Варенье из грецкого ореха" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Варенье из грецкого ореха</h3>
+            </div>
+            <div class="card">
+                <img src="assets/мороженое-лакомка.jpg" alt="Мороженое лакомка" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Мороженое лакомка</h3>
+            </div>
+        </div>
+
+        <!-- ФРУКТЫ -->
+        <h2 id="section-fruits" class="section-title">ФРУКТЫ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/арбуз.png" alt="Вкусный арбуз" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Вкусный арбуз 🍉</h3>
+            </div>
+            <div class="card">
+                <img src="assets/нарезанный-банан.jpg" alt="Банан (специально нарезанный вилкой)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Банан (специально нарезанный вилкой)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/манго.jpg" alt="Манго" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Манго</h3>
+            </div>
+            <div class="card">
+                <img src="assets/виноград.jpg" alt="Виноград" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Виноград</h3>
+            </div>
+            <div class="card">
+                <img src="assets/мандарины.jpg" alt="Мандарины" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Мандарины</h3>
+            </div>
+            <div class="card">
+                <img src="assets/помело.png" alt="Помело" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Помело</h3>
+            </div>
+        </div>
+
+        <!-- НАПИТКИ -->
+        <h2 id="section-drinks" class="section-title">НАПИТКИ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/квас.jpg" alt="Квас" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Квас</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Настоечки (красные)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Настоечки (красные)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/ред-булл.jpg" alt="Red Bull (без сахара и арбузный)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Red Bull (без сахара и арбузный)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/ред-булл.jpg" alt="Тайский Red Bull" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Тайский Red Bull</h3>
+            </div>
+            <div class="card">
+                <img src="assets/арбузный-сок.jpg" alt="Арбузный сок (из кафетерия или из магазина)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Арбузный сок (из кафетерия или из магазина)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Фанта персиковая" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Фанта персиковая</h3>
+            </div>
+            <div class="card">
+                <img src="assets/кола.jpg" alt="Кола (особенно Добрый Кола)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Кола (особенно Добрый Кола)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/минеральная-вода.jpg" alt="Вода (Сан Бенедетто, Fiji, газированная зелёная, Байкал)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Вода (Сан Бенедетто, Fiji, газированная зелёная, Байкал)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/черноголовка-лемонад.jpg" alt="Черноголовка" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Черноголовка</h3>
+            </div>
+            <div class="card">
+                <img src="assets/клубничный-коктейль.jpg" alt="Клубничный молочный коктейль (Шейк Шак, Вкусно и точка)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Клубничный молочный коктейль (Шейк Шак, Вкусно и точка)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/кофе-неспрессо.jpg" alt="Кофе Nespresso" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Кофе Nespresso</h3>
+            </div>
+            <div class="card">
+                <img src="assets/горячий-компот.jpg" alt="Горячий компот Викин" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Горячий компот Викин</h3>
+            </div>
+            <div class="card">
+                <img src="assets/крафтовое-пиво.png" alt="Пиво Брюдог и жёлтое лёгкое" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Пиво Брюдог и жёлтое лёгкое</h3>
+            </div>
+            <div class="card">
+                <img src="assets/виски-макаллан.jpg" alt="Виски Macallan 12 лет" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Виски Macallan 12 лет</h3>
+            </div>
+            <div class="card">
+                <img src="assets/кислый-коктейль.jpg" alt="Коктейли с пенкой (сауры, только не на виски)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Коктейли с пенкой (сауры, только не на виски)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/молочный-коктейль-с-мороженым.jpg" alt="Викин молочный коктейль на мороженом" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Викин молочный коктейль на мороженом</h3>
+            </div>
+        </div>
+
+        <!-- ДЕЛИКАТЕСЫ -->
+        <h2 id="section-delicacies" class="section-title">ДЕЛИКАТЕСЫ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/черная-треска.png" alt="Чёрная треска" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Чёрная треска</h3>
+            </div>
+            <div class="card">
+                <img src="assets/такосы-с-тунцом.jpg" alt="Такосы с тунцом - Timeout" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Такосы с тунцом - Timeout</h3>
+            </div>
+            <div class="card">
+                <img src="assets/обычные-такосы.jpg" alt="Такосы обычные" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Такосы обычные</h3>
+            </div>
+            <div class="card">
+                <img src="assets/багет-с-зеленью.png" alt="Багет с маслом и зеленью (метро)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Багет с маслом и зеленью (метро)</h3>
+            </div>
+        </div>
+
+        <!-- БЫСТРАЯ ЕДА -->
+        <h2 id="section-fast-food" class="section-title">БЫСТРАЯ ЕДА (без готовки)</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/доширак.png" alt="Доширак, Ролтон" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Доширак, Ролтон</h3>
+            </div>
+            <div class="card">
+                <img src="assets/сырок-со-сгущенкой.png" alt="Сырок со сгущёнкой" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сырок со сгущёнкой</h3>
+            </div>
+            <div class="card">
+                <img src="assets/кукуруза-в-банке.png" alt="Кукуруза в банке" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Кукуруза в банке</h3>
+            </div>
+            <div class="card">
+                <img src="assets/ананас-в-банке.png" alt="Ананас в банке" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Ананас в банке</h3>
+            </div>
+            <div class="card">
+                <img src="assets/чипсы.jpg" alt="Чипсы" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Чипсы</h3>
+            </div>
+            <div class="card">
+                <img src="assets/даниссимо.jpg" alt="Даниссимо" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Даниссимо</h3>
+            </div>
+            <div class="card">
+                <img src="assets/ряженка.png" alt="Ряженка" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Ряженка</h3>
+            </div>
+            <div class="card">
+                <img src="assets/чипсы.jpg" alt="Сухарики 3 корочки" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Сухарики 3 корочки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Конфеты Патчи" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Конфеты Патчи</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Семечки от Мартина с солью (большие и огромные)" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Семечки от Мартина с солью (большие и огромные)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Шоколад Риттерспорт" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Шоколад Риттерспорт</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Фисташки" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Фисташки</h3>
+            </div>
+        </div>
+
+        <!-- ЛЮБИМЫЕ РЕСТОРАНЫ -->
+        <h2 id="section-restaurants" class="section-title">ЛЮБИМЫЕ РЕСТОРАНЫ</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Оригами" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Оригами (Дубай)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Баку" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Баку (Дубай)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Брас Манки" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Брас Манки (Дубай)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Клэй" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Клэй (Дубай)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Лето" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Лето (Дубай)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Чайхана" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Чайхана (Москва)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Eshak" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Eshak (Москва)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Шор Хаус" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Шор Хаус (Москва)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Ресторан в церкви" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Ресторан в церкви (Москва)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Хлеб да Винчик" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Хлеб да Винчик (Москва)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/общая-еда.jpg" alt="Превью" onerror="this.classList.add('placeholder'); this.alt='';">
+                <h3>Превью (Москва)</h3>
+            </div>
+        </div>
+
+        <!-- Навигация -->
+        <nav class="dot-navigation">
+            <a href="#section-breakfast" class="dot" data-tooltip="ЗАВТРАК"></a>
+            <a href="#section-cold-appetizers" class="dot" data-tooltip="ХОЛОДНЫЕ ЗАКУСКИ"></a>
+            <a href="#section-hot-appetizers" class="dot" data-tooltip="ГОРЯЧИЕ ЗАКУСКИ"></a>
+            <a href="#section-salads" class="dot" data-tooltip="САЛАТЫ"></a>
+            <a href="#section-soups" class="dot" data-tooltip="СУПЫ"></a>
+            <a href="#section-main-dishes" class="dot" data-tooltip="ОСНОВНЫЕ БЛЮДА"></a>
+            <a href="#section-sushi" class="dot" data-tooltip="СУШИ И РОЛЛЫ"></a>
+            <a href="#section-bakery" class="dot" data-tooltip="ВЫПЕЧКА"></a>
+            <a href="#section-desserts" class="dot" data-tooltip="ДЕСЕРТЫ"></a>
+            <a href="#section-fruits" class="dot" data-tooltip="ФРУКТЫ"></a>
+            <a href="#section-drinks" class="dot" data-tooltip="НАПИТКИ"></a>
+            <a href="#section-delicacies" class="dot" data-tooltip="ДЕЛИКАТЕСЫ"></a>
+            <a href="#section-fast-food" class="dot" data-tooltip="БЫСТРАЯ ЕДА"></a>
+            <a href="#section-restaurants" class="dot" data-tooltip="РЕСТОРАНЫ"></a>
+        </nav>
+    </div>
+
+    <script>
+        // Обработка заглушек для изображений
+        document.querySelectorAll('.card img').forEach(img => {
+            img.addEventListener('error', function() {
+                if (!this.classList.contains('placeholder')) {
+                    this.classList.add('placeholder');
+                    this.style.background = 'linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%)';
+                    this.style.display = 'flex';
+                    this.style.alignItems = 'center';
+                    this.style.justifyContent = 'center';
+                    this.style.color = '#999';
+                    this.style.fontSize = '14px';
+                }
+            });
+        });
+
+        // Навигация с точками
+        const dots = document.querySelectorAll('.dot');
+        const sections = document.querySelectorAll('.section-title');
+
+        // Плавная прокрутка при клике на точку
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = dot.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Определение активного раздела на основе позиции скролла
+        function updateActiveSection() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Находим последний раздел, заголовок которого уже прошел верхнюю границу экрана
+            let currentSectionIndex = 0;
+            const offset = 150; // Отступ от верха экрана для более ранней активации
+
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+
+                // Если заголовок раздела находится выше отступа от верха экрана
+                if (rect.top <= offset) {
+                    currentSectionIndex = index;
+                }
+            });
+
+            // Активируем соответствующий дот
+            dots.forEach((dot, index) => {
+                if (index === currentSectionIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Проверяем позицию при загрузке страницы
+        updateActiveSection();
+
+        // Проверяем позицию при скролле
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                window.cancelAnimationFrame(scrollTimeout);
+            }
+            scrollTimeout = window.requestAnimationFrame(updateActiveSection);
+        }, { passive: true });
+    </script>
+</body>
+</html>

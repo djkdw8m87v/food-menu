@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню Анжелики - Избранные блюда</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .card h3 {
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            min-height: 60px;
+            max-height: 60px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Печать */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm 5mm 5mm 5mm; /* top right bottom left */
+            }
+
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 3mm;
+                padding: 2mm;
+            }
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                box-shadow: none;
+                border: 1px solid #e0e0e0;
+                page-break-inside: avoid;
+                break-inside: avoid;
+                border-radius: 12px;
+                overflow: hidden;
+                background: white;
+            }
+
+            .card img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+                object-position: top;
+                border-radius: 12px 12px 0 0;
+                flex-shrink: 0;
+            }
+
+            .card h3 {
+                padding: 10px;
+                text-align: center;
+                font-size: 20px;
+                font-weight: 600;
+                min-height: 60px;
+                max-height: 60px;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto;
+                width: 100%;
+                line-height: 1.1;
+                box-sizing: border-box;
+            }
+
+            .card:nth-child(12n) {
+                page-break-after: always;
+                break-after: page;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="grid">
+            <div class="card">
+                <img src="assets/corn-BldAzzjK.jpg" alt="Кукуруза варёная">
+                <h3>Кукуруза варёная</h3>
+            </div>
+            <div class="card">
+                <img src="assets/octopus-sausages-CAK3FP-x.jpg" alt="Сосиски-осьминожки">
+                <h3>Сосиски-осьминожки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/sausages-dough-CexKV05M.jpg" alt="Сосиски в тесте">
+                <h3>Сосиски в тесте</h3>
+            </div>
+            <div class="card">
+                <img src="assets/waffles-5sPi8-54.jpg" alt="Вафли">
+                <h3>Вафли</h3>
+            </div>
+            <div class="card">
+                <img src="assets/pancakes-RUMewfqk.jpg" alt="Панкейки">
+                <h3>Панкейки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/spaghetti-new.png" alt="Спагетти">
+                <h3>Спагетти</h3>
+            </div>
+            <div class="card">
+                <img src="assets/black-pasta-new.png" alt="Чёрные макароны">
+                <h3>Чёрные макароны</h3>
+            </div>
+            <div class="card">
+                <img src="assets/cheese-sticks-new.png" alt="Сырные палочки">
+                <h3>Сырные палочки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/cheese-balls-new.png" alt="Сырные шарики">
+                <h3>Сырные шарики</h3>
+            </div>
+            <div class="card">
+                <img src="assets/cheburek-new.png" alt="Чебуреки с сыром">
+                <h3>Чебуреки с сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/pizza-new.png" alt="Пицца (края с сыром)">
+                <h3>Пицца (края с сыром)</h3>
+            </div>
+            <div class="card">
+                <img src="assets/nuggets-new.png" alt="Наггетсы">
+                <h3>Наггетсы</h3>
+            </div>
+            <div class="card">
+                <img src="assets/french-fries-new.png" alt="Картошка фри">
+                <h3>Картошка фри</h3>
+            </div>
+            <div class="card">
+                <img src="assets/bliny-new.png" alt="Блины">
+                <h3>Блины</h3>
+            </div>
+            <div class="card">
+                <img src="assets/corn-sticks-BhSgbBCr.jpg" alt="Кукурузные палочки">
+                <h3>Кукурузные палочки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/cookies-B4ALpL8L.jpg" alt="Печенье">
+                <h3>Печенье</h3>
+            </div>
+            <div class="card">
+                <img src="assets/ice-cream-new.png" alt="Мороженое">
+                <h3>Мороженое</h3>
+            </div>
+            <div class="card">
+                <img src="assets/opera-cake-BP0Ylsmg.jpg" alt="Торт опера">
+                <h3>Торт опера</h3>
+            </div>
+            <div class="card">
+                <img src="assets/leningrad-cake-Dq63mDfc.jpg" alt="Торт ленинградский">
+                <h3>Торт ленинградский</h3>
+            </div>
+            <div class="card">
+                <img src="assets/grapes-DL7KqN97.jpg" alt="Виноград">
+                <h3>Виноград</h3>
+            </div>
+            <div class="card">
+                <img src="assets/lavash-mp-583Qy.jpg" alt="Лаваш с сыром">
+                <h3>Лаваш с сыром</h3>
+            </div>
+            <div class="card">
+                <img src="assets/cinnabon-Cm3jS1wc.jpg" alt="Синабоны без посыпки">
+                <h3>Синабоны без посыпки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/mashed-potatoes-Dq2ag_KO.jpg" alt="Пюре">
+                <h3>Пюре</h3>
+            </div>
+            <div class="card">
+                <img src="assets/donuts-CM5hs3Y7.jpg" alt="Донаты">
+                <h3>Донаты</h3>
+            </div>
+            <div class="card">
+                <img src="assets/chocolate-BXnBQ7of.jpg" alt="Шоколад">
+                <h3>Шоколад</h3>
+            </div>
+            <div class="card">
+                <img src="assets/oladushki-BFtSEeHs.jpg" alt="Оладушки">
+                <h3>Оладушки</h3>
+            </div>
+            <div class="card">
+                <img src="assets/nutella-Beh9Xcwt.jpg" alt="Нутелла">
+                <h3>Нутелла</h3>
+            </div>
+            <div class="card">
+                <img src="assets/chinese-rice-new.png" alt="Рис китайский">
+                <h3>Рис китайский</h3>
+            </div>
+            <div class="card">
+                <img src="assets/apple-juice-DDTrq1a6.jpg" alt="Сок яблочный">
+                <h3>Сок яблочный</h3>
+            </div>
+            <div class="card">
+                <img src="assets/chamomile-tea-BhxXGvXc.jpg" alt="Ромашка">
+                <h3>Ромашка</h3>
+            </div>
+            <div class="card">
+                <img src="assets/cocoa-new.png" alt="Какао">
+                <h3>Какао</h3>
+            </div>
+            <div class="card">
+                <img src="assets/cinnamon-tea-BkWQS2iC.jpg" alt="Чай с корицей">
+                <h3>Чай с корицей</h3>
+            </div>
+            <div class="card">
+                <img src="assets/lemon-tea-BEntnaaO.jpg" alt="Липтон холодный">
+                <h3>Липтон холодный</h3>
+            </div>
+            <div class="card">
+                <img src="assets/chocolate-milkshake-guBDiEUI.jpg" alt="Коктейль шоколадный">
+                <h3>Коктейль шоколадный</h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

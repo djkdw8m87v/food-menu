@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'claude/github-pages-link-011CUmgpXmeqAaGW3meKGyFa'
+      - 'claude/arthur-menu-dish-font-size-011CUo1T3wxpmR3PVMJFw8AU'
 
 jobs:
   merge:
@@ -22,6 +23,7 @@ jobs:
 
       - name: Merge to main
         run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           git checkout main
-          git merge -X theirs --no-ff origin/claude/github-pages-link-011CUmgpXmeqAaGW3meKGyFa -m "Auto-merge from claude/github-pages-link-011CUmgpXmeqAaGW3meKGyFa"
+          git merge -X theirs --no-ff "origin/${BRANCH_NAME}" -m "Auto-merge from ${BRANCH_NAME}"
           git push origin main

@@ -332,6 +332,16 @@
             max-height: 95%;
             object-fit: contain;
             animation: zoomIn 0.2s ease;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .modal-content.swiping {
+            transition: none;
+        }
+
+        .modal-content.closing {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
 
         @keyframes zoomIn {
@@ -1179,18 +1189,36 @@
                 modalImg.src = this.src;
                 modalImg.alt = this.alt;
                 document.body.style.overflow = 'hidden';
+
+                // Reset transform
+                modalImg.style.transform = '';
+                modalImg.classList.remove('swiping', 'closing');
             });
         });
 
-        // Close modal on click
+        // Close modal function
         function closeModal() {
             modal.classList.remove('active');
             document.body.style.overflow = '';
+            modalImg.style.transform = '';
+            modalImg.classList.remove('swiping', 'closing');
+        }
+
+        // Close modal with animation
+        function closeModalWithSwipe(direction) {
+            modalImg.classList.add('closing');
+            const distance = direction === 'up' ? -window.innerHeight : window.innerHeight;
+            modalImg.style.transform = `translateY(${distance}px)`;
+            modalImg.style.opacity = '0';
+
+            setTimeout(() => {
+                closeModal();
+            }, 300);
         }
 
         closeBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', function(e) {
-            if (e.target === modal || e.target === modalImg) {
+            if (e.target === modal) {
                 closeModal();
             }
         });
@@ -1201,6 +1229,63 @@
                 closeModal();
             }
         });
+
+        // Touch/Swipe handling
+        let touchStartY = 0;
+        let touchStartX = 0;
+        let touchCurrentY = 0;
+        let isSwiping = false;
+
+        modalImg.addEventListener('touchstart', function(e) {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+            isSwiping = true;
+            modalImg.classList.add('swiping');
+        }, { passive: true });
+
+        modalImg.addEventListener('touchmove', function(e) {
+            if (!isSwiping) return;
+
+            touchCurrentY = e.touches[0].clientY;
+            const touchCurrentX = e.touches[0].clientX;
+            const deltaY = touchCurrentY - touchStartY;
+            const deltaX = touchCurrentX - touchStartX;
+
+            // Only allow vertical swipe (prevent horizontal interference)
+            if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                const opacity = 1 - Math.abs(deltaY) / window.innerHeight;
+                modalImg.style.transform = `translateY(${deltaY}px)`;
+                modalImg.style.opacity = Math.max(0.3, opacity);
+            }
+        }, { passive: true });
+
+        modalImg.addEventListener('touchend', function(e) {
+            if (!isSwiping) return;
+
+            const deltaY = touchCurrentY - touchStartY;
+            const threshold = 100; // Minimum swipe distance in pixels
+
+            modalImg.classList.remove('swiping');
+            isSwiping = false;
+
+            // Check if swipe is strong enough to close
+            if (Math.abs(deltaY) > threshold) {
+                const direction = deltaY < 0 ? 'up' : 'down';
+                closeModalWithSwipe(direction);
+            } else {
+                // Return to original position
+                modalImg.classList.add('closing');
+                modalImg.style.transform = '';
+                modalImg.style.opacity = '';
+
+                setTimeout(() => {
+                    modalImg.classList.remove('closing');
+                }, 300);
+            }
+
+            touchStartY = 0;
+            touchCurrentY = 0;
+        }, { passive: true });
     </script>
 </body>
 </html>

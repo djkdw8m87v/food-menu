@@ -306,23 +306,7 @@
         .card img {
             cursor: pointer;
         }
-
-        /* GLightbox custom styles */
-        .gslide-description {
-            position: absolute;
-            top: 0;
-            bottom: auto;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-        }
-
-        .gdesc-inner {
-            font-size: 20px;
-            padding: 20px;
-            text-align: center;
-            color: #fff;
-        }
+        /* Removed: GLightbox custom title styles */
     </style>
 </head>
 <body>
@@ -1143,39 +1127,7 @@
                             lightbox.close();
                         });
                     }
-
-                    // Ultra-sensitive vertical swipe to close
-                    if (glightboxContainer) {
-                        let touchStartY = 0;
-                        let touchStartX = 0;
-                        let isTouching = false;
-
-                        glightboxContainer.addEventListener('touchstart', function(e) {
-                            touchStartY = e.touches[0].clientY;
-                            touchStartX = e.touches[0].clientX;
-                            isTouching = true;
-                        }, { passive: true });
-
-                        glightboxContainer.addEventListener('touchmove', function(e) {
-                            if (!isTouching) return;
-
-                            const touchCurrentY = e.touches[0].clientY;
-                            const touchCurrentX = e.touches[0].clientX;
-                            const deltaY = Math.abs(touchCurrentY - touchStartY);
-                            const deltaX = Math.abs(touchCurrentX - touchStartX);
-
-                            // If vertical movement is greater than horizontal (very sensitive!)
-                            if (deltaY > deltaX && deltaY > 20) {
-                                // Close immediately on vertical swipe
-                                lightbox.close();
-                                isTouching = false;
-                            }
-                        }, { passive: true });
-
-                        glightboxContainer.addEventListener('touchend', function() {
-                            isTouching = false;
-                        }, { passive: true });
-                    }
+                    /* Removed: Custom vertical swipe handler */
                 }, 100);
             }
         });

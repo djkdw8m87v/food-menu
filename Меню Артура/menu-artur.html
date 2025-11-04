@@ -1134,12 +1134,47 @@
                 // Add click to close on image
                 setTimeout(() => {
                     const modalImage = document.querySelector('.gslide-image img');
+                    const glightboxContainer = document.querySelector('.gslide-media');
+
                     if (modalImage) {
                         modalImage.style.cursor = 'pointer';
                         modalImage.addEventListener('click', function(e) {
                             e.stopPropagation();
                             lightbox.close();
                         });
+                    }
+
+                    // Ultra-sensitive vertical swipe to close
+                    if (glightboxContainer) {
+                        let touchStartY = 0;
+                        let touchStartX = 0;
+                        let isTouching = false;
+
+                        glightboxContainer.addEventListener('touchstart', function(e) {
+                            touchStartY = e.touches[0].clientY;
+                            touchStartX = e.touches[0].clientX;
+                            isTouching = true;
+                        }, { passive: true });
+
+                        glightboxContainer.addEventListener('touchmove', function(e) {
+                            if (!isTouching) return;
+
+                            const touchCurrentY = e.touches[0].clientY;
+                            const touchCurrentX = e.touches[0].clientX;
+                            const deltaY = Math.abs(touchCurrentY - touchStartY);
+                            const deltaX = Math.abs(touchCurrentX - touchStartX);
+
+                            // If vertical movement is greater than horizontal (very sensitive!)
+                            if (deltaY > deltaX && deltaY > 20) {
+                                // Close immediately on vertical swipe
+                                lightbox.close();
+                                isTouching = false;
+                            }
+                        }, { passive: true });
+
+                        glightboxContainer.addEventListener('touchend', function() {
+                            isTouching = false;
+                        }, { passive: true });
                     }
                 }, 100);
             }

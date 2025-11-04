@@ -5,6 +5,7 @@ on:
     branches:
       - 'claude/github-pages-link-011CUmgpXmeqAaGW3meKGyFa'
       - 'claude/arthur-menu-dish-font-size-011CUo1T3wxpmR3PVMJFw8AU'
+      - 'claude/convert-svg-to-favicon-011CUoNUmtKRDdyh5pxbsbdp'
 
 jobs:
   merge:

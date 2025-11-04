@@ -1109,10 +1109,23 @@
             closeOnOutsideClick: true,
             keyboardNavigation: true,
             draggable: true,
-            dragToleranceX: 40,
-            dragToleranceY: 65,
+            dragToleranceX: 30,
+            dragToleranceY: 40,
             dragAutoSnap: false,
-            preload: true
+            preload: true,
+            onOpen: function() {
+                // Add click to close on image
+                setTimeout(() => {
+                    const modalImage = document.querySelector('.gslide-image img');
+                    if (modalImage) {
+                        modalImage.style.cursor = 'pointer';
+                        modalImage.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            lightbox.close();
+                        });
+                    }
+                }, 100);
+            }
         });
     </script>
 </body>
